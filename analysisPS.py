@@ -9,16 +9,17 @@ import argparse
 import os
 import time
 
+#Starting time logging
 start_time = time.time()
 
+# Creating the output directory
 directory = 'Output'
-
 if not os.path.exists(directory):
     os.makedirs(directory)
 
 
-# Create the parser
-parser = argparse.ArgumentParser(description="take in a pysm3 map and solve for a power spectrum")
+# Creating the parser
+parser = argparse.ArgumentParser(description="take in a map and solve for a power spectrum")
 parser.add_argument("map",nargs='+',type=str, help="the map to solve for the power spectrum")
 parser.add_argument("ang_ext", help="the angular extent (in degrees) of the input map")
 parser.add_argument("binning", help="binning of the power spectrum")
@@ -146,10 +147,10 @@ if len(args.map) == 1:
         # Create a figure
         fig = plt.figure(figsize=(18,10))
 
-    # Define the grid
+    # Defining the grid
         gs = gridspec.GridSpec(2, 1)
 
-    # Create the first subplot
+    # Creating the first subplot
         ax1 = fig.add_subplot(gs[:1, :])
         ax1.tick_params(axis='y', labelsize=14)  # Change the size of the y-axis ticks
         ax1.tick_params(axis='x', labelsize=14)  # Change the size of the x-axis ticks
@@ -160,7 +161,7 @@ if len(args.map) == 1:
         ax1.legend(fontsize=13)
         ax1.set_title(f'Normalized power spectrum of the {marker} map and the ML solution', fontsize=17)
         
-    # Create the second subplot
+    # Creating the second subplot
         ax2 = fig.add_subplot(gs[1, :])
         ax2.tick_params(axis='y', labelsize=14)
         ax2.tick_params(axis='x', labelsize=14)
@@ -183,27 +184,27 @@ if len(args.map) == 1:
         ellw,dlw=slv.ps_calc(solw,ang_ext,delta_ell=bin_size)
         ellr,dlr=slv.ps_calc(solr,ang_ext,delta_ell=bin_size)
         
-        # Create a figure
+        # Creating a figure
         fig = plt.figure(figsize=(14, 10))
 
-        # Define the grid
+        # Defining the grid
         gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1])
 
-        # Create the first subplot for the map
+        # Creating the first subplot for the map
         ax1 = plt.subplot(gs[0, 0])
         im = ax1.imshow(solw, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax1, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax1.set_title('ML solution (W.N.)', fontsize=17)
 
-        # Create the second subplot for the map
+        # Creating the second subplot for the map
         ax2 = plt.subplot(gs[0, 1])
         im = ax2.imshow(solr, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax2, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax2.set_title('ML solution (R.N.)', fontsize=17)
 
-        # Create the third subplot for the power spectrum
+        # Creating the third subplot for the power spectrum
         ax3 = plt.subplot(gs[1, :])
         ax3.semilogy(ellw, dlw, 'r', label=f'ML solution {solw.shape[0]}x{solw.shape[1]} (W.N.)')
         ax3.semilogy(ellr, dlr, 'b', label=f'ML solution {solr.shape[0]}x{solr.shape[1]} (R.N.)')
@@ -213,7 +214,7 @@ if len(args.map) == 1:
         ax3.legend(fontsize=13)
         ax3.set_title('Power spectrum of the ML maps', fontsize=17)
 
-        # Adjust the layout and save the figure
+        # Adjusting the layout and saving the figure
         plt.tight_layout()
         plt.savefig(f'{directory}/{marker}_Solutions.png')
         plt.show()
@@ -248,7 +249,7 @@ if len(args.map) == 1:
 
         #plotting the residual PS
         plt.figure(figsize=(18,7))
-        # Create a figure
+        # Creating a figure
         fig = plt.figure(figsize=(18,10))
 
     # Define the grid
@@ -372,21 +373,21 @@ elif len(args.map) == 2:
         ax1.legend(fontsize=13)
         ax1.set_title('Power spectrum of the ML maps', fontsize=17)
 
-        # Create the second subplot for the map
+        # Creating the second subplot for the map
         ax2 = fig.add_subplot(gs[0, 0])
         im = ax2.imshow(sol, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax2, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax2.set_title('ML solution 1', fontsize=17)
         
-        # Create the third subplot for the map
+        # Creating the third subplot for the map
         ax3 = fig.add_subplot(gs[0, 1])
         im = ax3.imshow(sol2, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax3, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax3.set_title('ML solution 2', fontsize=17)
 
-        # Adjust the layout and save the figure
+        # Adjusting the layout and save the figure
         plt.tight_layout()
         plt.savefig(f'{directory}/{marker1}_{marker2}_Solution_without_noise.png')
         plt.show()
@@ -420,13 +421,13 @@ elif len(args.map) == 2:
         res2=(norm2-normm2)/normm2 * 100
         #plotting the residual PS
         plt.figure(figsize=(18,7))
-        # Create a figure
+        # Creating a figure
         fig = plt.figure(figsize=(18,10))
 
-    # Define the grid
+    # Defining the grid
         gs = gridspec.GridSpec(3, 1)
         
-    # Create the first subplot
+    # Creating the first subplot
         ax1 = fig.add_subplot(gs[:2, :])
         for axis in ['top','bottom','left','right']:
             ax1.spines[axis].set_linewidth(3)
@@ -442,7 +443,7 @@ elif len(args.map) == 2:
         ax1.legend(fontsize=13)
         ax1.set_title(f'Normalized power spectrum of the {marker1} and {marker2} maps and the ML solutions', fontsize=17)
 
-    # Create the second subplot
+    # Creating the second subplot
         ax2 = fig.add_subplot(gs[2, :])
         for axis in ['top','bottom','left','right']:
             ax2.spines[axis].set_linewidth(3)
@@ -471,41 +472,41 @@ elif len(args.map) == 2:
         ellw2,dlw2=slv.ps_calc(solw2,ang_ext,delta_ell=bin_size)
         ellr2,dlr2=slv.ps_calc(solr2,ang_ext,delta_ell=bin_size)
        
-        # Create a figure
+        # Creating a figure
         fig = plt.figure(figsize=(12, 16))
 
-        # Define the grid
+        # Defining the grid
         gs = gridspec.GridSpec(3, 2, height_ratios=[1, 1, 1])
 
-        # Create the first subplot for the map
+        # Creating the first subplot for the map
         ax1 = plt.subplot(gs[0, 0])
         im = ax1.imshow(solw, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax1, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax1.set_title('ML solution 1 (W.N.)', fontsize=17)
 
-        # Create the second subplot for the map
+        # Creating the second subplot for the map
         ax2 = plt.subplot(gs[0, 1])
         im = ax2.imshow(solr, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax2, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax2.set_title('ML solution 1 (R.N.)', fontsize=17)
 
-        # Create the third subplot for the map
+        # Creating the third subplot for the map
         ax3 = plt.subplot(gs[1, 0])
         im = ax3.imshow(solw2, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax3, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax3.set_title('ML solution 2 (W.N.)', fontsize=17)
 
-        # Create the fourth subplot for the map
+        # Creating the fourth subplot for the map
         ax4 = plt.subplot(gs[1, 1])
         im = ax4.imshow(solr2, cmap='RdBu', interpolation='bilinear')
         cbar = fig.colorbar(im, ax=ax4, orientation='vertical')
         cbar.set_label('temperature [uK]', rotation=270, labelpad=15, fontsize=14)
         ax4.set_title('ML solution 2 (R.N.)', fontsize=17)
 
-        # Create the fifth subplot for the power spectrum
+        # Creating the fifth subplot for the power spectrum
         ax5 = plt.subplot(gs[2, :])
         ax5.semilogy(ellw, dlw, 'r', label=f'ML solution 1 {solw.shape[0]}x{solw.shape[1]} (W.N.)')
         ax5.semilogy(ellr, dlr, 'b', label=f'ML solution 1 {solr.shape[0]}x{solr.shape[1]} (R.N.)')
@@ -977,6 +978,8 @@ else:
     else:
         raise ValueError("The noise parameter should be 0 or 1")
 print("The code has been executed successfully!")
+
+# printing the time taken for the analysis
 
 end_time=time.time()
 print(f"Your analysis took {end_time-start_time} seconds!!!")

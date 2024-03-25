@@ -11,6 +11,8 @@ class MLsolver:
     Parameters:
     - map (numpy.ndarray): Input map for which maximum likelihood solution needs to be computed.
     - nside (int): number of pixels per side in the output map. Default is 100.
+    - N_white (float): White noise level parameter for the noise model. Default is 1.8.
+    - fknee (float): Frequency knee parameter for the noise model. Default is 0.01.
 
     Attributes:
     - map (numpy.ndarray): Input map.
@@ -19,11 +21,12 @@ class MLsolver:
     - npix (int): Number of pixels in the map. Calculated as nside^2.
 
     Functions:
-    1. tod_signal()
-    2. get_PointingMatrix()
-    3. noisemodel(index)
+    1. get_PointingMatrix()
+    2. noisemodel(index)
+    3. tod_signal(index, with_noise=True)
     4. fmul(f, x)
-    5. ml_solver(iN)
+    5. map_w_noise(noise_model_index)
+    6. ml_solver(noise_model_index, add_noise=True)
     """
 
     def __init__(self, map, nside=100, N_white=1.8, fknee=0.01):
@@ -33,6 +36,8 @@ class MLsolver:
         Parameters:
         - map (numpy.ndarray): Input map for which maximum likelihood solution needs to be computed.
         - nside (int): number of pixels per side in the output map. Default is 100.
+        - N_white (float): White noise level parameter for the noise model. Default is 1.8.
+        - fknee (float): Frequency knee parameter for the noise model. Default is 0.01.
         """
         self.map = map
         self.nside = nside
@@ -86,8 +91,12 @@ class MLsolver:
         """
         Concatenates the map and its transpose to form the time-ordered data (TOD) signal.
 
+        Parameters:
+        - index (float): Index parameter for the noise model.
+        - with_noise (bool): Flag to add noise to the signal. Default is True.
+
         Returns:
-        - numpy.ndarray: a TOD signal.
+        - numpy.ndarray: A TOD signal.
         """
         
         if with_noise==True:
@@ -115,6 +124,15 @@ class MLsolver:
             return np.fft.irfft(np.fft.rfft(x) * f, n=len(x)).real
         
     def map_w_noise(self,noise_model_index):
+        """
+        Generates a map with added noise based on the noise model.
+
+        Parameters:
+        - noise_model_index (float): Index parameter for the noise model.
+
+        Returns:
+        - numpy.ndarray: Noisy map.
+        """
         tod = self.tod_signal(noise_model_index)
         noisy_map=tod[:tod.size//2].reshape(self.nscan, self.nscan)
         return noisy_map
@@ -127,6 +145,7 @@ class MLsolver:
 
         Parameters:
         - noise_model_index (float): Choose the slope of the noise model.
+        - add_noise (bool): Flag to add noise to the signal. Default is True.
 
         Returns:
         - numpy.ndarray: Maximum likelihood solution.
@@ -152,7 +171,15 @@ class MLsolver:
     
 
 def cosine_window(N):
-    "makes a cosine window for apodizing to avoid edges effects in the 2d FFT" 
+    """
+    Generates a cosine window for apodizing to avoid edges effects in the 2d FFT.
+
+    Parameters:
+    - N (int): Size of the window.
+
+    Returns:
+    - numpy.ndarray: Cosine window map.
+    """
     # make a 2d coordinate system
     N=int(N) 
     ones = np.ones(N)
@@ -168,6 +195,20 @@ def cosine_window(N):
 
 
 def ps_calc(input_map,ang_size,ell_max=5000,delta_ell=50,appodize=True):
+    """
+    Computes the power spectrum of the input map.
+
+    Parameters:
+    - input_map (numpy.ndarray): Input map.
+    - ang_size (float): Angular size of the map in degrees.
+    - ell_max (int): Maximum ell value for the power spectrum. Default is 5000.
+    - delta_ell (int): Bin size for the power spectrum. Default is 50.
+    - appodize (bool): Flag to apply cosine window apodization. Default is True.
+
+    Returns:
+    - numpy.ndarray: Ell bins.
+    - numpy.ndarray: Power spectrum.
+    """
     N=int(input_map.shape[0])
     pix_size=ang_size*60/N
     if appodize==True:
