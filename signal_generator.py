@@ -14,7 +14,7 @@ def fmul(f,x):
 	if np.asarray(f).size == 1: return f*x
 	else: return np.fft.irfft(np.fft.rfft(x)*f,n=len(x)).real
 
-nside = 100   # Number of pixels per side
+nside = 300   # Number of pixels per side
 nscan = nside*4 # Number of samples per row. 
 npix  = nside**2 # Number of pixels in map
 
@@ -32,7 +32,7 @@ P_nn    = scipy.sparse.csr_array((np.full(nsamp,1),(np.arange(nsamp),iy*nside+ix
 
 
 # Creating a noise simulator
-def simul_noise(fknee, alpha, nsamp):
+def simul_noise(fknee, alpha, N_white):
     """
     Simulates noise based on knee frequency (fknee) and the index of the power law (alpha).
 
@@ -51,7 +51,7 @@ def simul_noise(fknee, alpha, nsamp):
     Finally, the function generates a noise sample by multiplying a random sample from a standard normal distribution with the square root of the inverted power spectrum.
     """
     freq  = np.fft.rfftfreq(nsamp)
-    iN    = 1/(1+(np.maximum(freq,freq[1]/2)/fknee)**alpha)
+    iN    = 1/(N_white*(1+(np.maximum(freq,freq[1]/2)/fknee)**alpha))
     iN    = np.maximum(iN, np.max(iN)*1e-8)
     noise  = fmul(iN**-0.5, np.random.standard_normal(nsamp))
     return noise, iN
