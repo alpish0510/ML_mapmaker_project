@@ -71,11 +71,11 @@ def simul_noise(fknee, alpha, nsamp, N_white=1):
     fknee (float): The knee frequency.
     alpha (float): The spectral index.
     nsamp (int): The number of samples to generate.
+    N_white (float, optional): The white noise level. Default is 1. The units are 10^-5 uK^2.
 
     Returns:
     noise (numpy.ndarray): The generated noise signal.
     iN (numpy.ndarray): The inverse noise model.
-    N_white (float): The white noise level. Default is 1. The units are 10^-5 uK^2.
 
     The function first calculates the frequency array for the given number of samples using np.fft.rfftfreq.
     It then calculates the noise model using the given fknee and alpha parameters.
@@ -124,6 +124,7 @@ def calculate_psd(signal, noise, nperseg=1024):
     Parameters:
     signal (numpy.ndarray): The input signal.
     noise (numpy.ndarray): The input noise.
+    nperseg (int, optional): The number of samples per segment. Default is 1024.
 
     Returns:
     (f_s, psd_s) (tuple): The frequencies and PSD of the signal.
@@ -146,6 +147,7 @@ def plot_psd(psd_signal, psd_noise, psd_signal_noise, keyword, modif=False):
     psd_noise (tuple): A tuple containing the frequencies and PSD of the noise.
     psd_signal_noise (tuple): A tuple containing the frequencies and PSD of the sum of the signal and noise.
     keyword (str): A string to be included in the title of the plot.
+    modif (bool, optional): A flag to modify the plot style. Default is False.
 
     The function creates three subplots. The first subplot is a log-log plot of the signal PSD. The second subplot is a log-log plot of the noise PSD. The third subplot is a log-log plot of the PSD of the sum of the signal and noise, with the signal and noise PSDs also plotted for comparison. The function also sets the title, x-label, and y-label for each subplot, and adds a legend to the third subplot. Finally, the function sets the title for the entire figure and displays the plot.
     """

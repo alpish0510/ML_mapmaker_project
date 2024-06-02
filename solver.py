@@ -67,7 +67,7 @@ class MLsolver:
 
     def noisemodel(self, index):
         """
-        Defines the noise model based on the index of the slope.
+        Creates the noise model based on its slope.
 
         Parameters:
         - index (float): Index parameter for the noise model.

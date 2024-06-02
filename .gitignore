@@ -1,3 +1,5 @@
 *.png
 *.ipynb
 *.npy
+/vol/arc4/data1/asrivastava/map_maker.py
+signal_generator.py
