@@ -4,14 +4,14 @@ This project is focused on the comprehensive analysis of a maximum likelihood (M
 
 
 # Script Description
-for help with the arguments to run a script, use the command "script.py -h"
+for help with the arguments to run a script, use "python3 script.py -h".
 
-1. simul.py : Using this script one can simulate a mock CMB sky (as described by Naess and Louis) and produce a ML solution of it. It also produces a binned map of the same mock CMB sky. In addition, it produces two noise maps (noise parameters can be can be passed as arguments while running the script) using both the methods (Binned and ML).
+1. simul.py : Using this script one can simulate a mock CMB sky (as described by Naess and Louis) and produce a ML solution of it. It also produces a binned map of the same mock CMB sky. In addition, it produces two noise maps (noise parameters can be can be passed as arguments while running the script) using both methods (Binned and ML).
 
 2. noise_analysis.py : This script allows you to perform a signal and noise analysis by calculating the power spectral density (PSD) of a mock CMB sky signal and a noise signal that is generated using the noise parameters that one inputs. The CMB sky could be simulated in exactly the same way as the simulation in Naess & Louis (2023) or a realistic CMB sky can be generated using a power spectrum from CAMB, etc. (If one wants to use a different power spectrum i.e. from sources other than CAMB then few modifications to the script may be required.)
 
 3. map_gen.py : A map generator tool to create smoothed CMB maps using the PySM3 package. R.A. and Dec. of a source can be passed as an argument along with a set of other parameters like map size, frequency of the map (GHz) and the emission model (https://pysm3.readthedocs.io/en/latest/models.html) used.
 
-4. analysisPS.py : This script calculates the power spectrum of a CMB map and the noise added ML solutions. The script can also perform a power spectrum comparison analysis of multiple maps (max 3). This can be used to verify the effect of resolution and noise on the ML soultions of a CMB map.
+4. analysisPS.py : This script calculates the power spectrum of a CMB map and the noise-added ML solutions. The script can also perform a power spectrum comparison analysis of multiple maps (max 3). This can be used to verify the effect of resolution and noise on the ML solutions of a CMB map.
 
 5. solver.py : The solver.py script is a Python module that acts as a black box. It contains a class named MLsolver which can be initialized with a Cosmic Microwave Background (CMB) map and certain noise parameters. Once an instance of MLsolver is created, its methods can be used to perform various operations such as signal and noise analysis, solving for a Maximum Likelihood (ML) map, and other signal-based analyses. This module is designed to be used by other scripts for performing their analyses.
